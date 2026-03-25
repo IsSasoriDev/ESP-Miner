@@ -1,0 +1,16 @@
+// Modern Theme Variables - Contemporary Design
+// Primary: Vibrant Purple-Blue with modern accents
+$primaryColor: #6366f1 !default; // Indigo
+$primaryLightColor: #818cf8 !default; // Light Indigo
+$primaryDarkColor: #4f46e5 !default; // Dark Indigo
+$primaryDarkerColor: #3730a3 !default; // Darker Indigo
+$primaryTextColor: white !default;
+
+// Modern highlights with better contrast
+$highlightBg: rgba(99, 102, 241, 0.12) !default;
+$highlightTextColor: rgba(255, 255, 255, 0.95) !default;
+$highlightFocusBg: rgba(99, 102, 241, 0.2) !default;
+
+$inputPadding: 0.625rem 0.875rem !default;
+
+@import '../_variables';

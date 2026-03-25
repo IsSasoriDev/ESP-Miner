@@ -98,17 +98,27 @@ else()
     set(OPENAPI_SPEC "${CMAKE_CURRENT_SOURCE_DIR}/http_server/openapi.yaml")
     set(OPENAPI_STAMP "${CMAKE_BINARY_DIR}/openapi_generate.stamp")
 
-    add_custom_command(
-        OUTPUT ${OPENAPI_STAMP}
-        COMMAND ${NPM_EXECUTABLE} i
-        COMMAND ${NPM_EXECUTABLE} run generate:api
-        COMMAND ${CMAKE_COMMAND} -E touch ${OPENAPI_STAMP}
-        WORKING_DIRECTORY ${WEB_SRC_DIR}
-        DEPENDS ${OPENAPI_SPEC}
-        COMMENT "Generating API client from OpenAPI spec (openapi.yaml changed)"
-        VERBATIM
-        USES_TERMINAL
-    )
+    # Skip OpenAPI generation if files already exist (avoid rm issues on Windows)
+    if(NOT EXISTS "${WEB_SRC_DIR}/src/app/generated/index.ts")
+        add_custom_command(
+            OUTPUT ${OPENAPI_STAMP}
+            COMMAND ${NPM_EXECUTABLE} i
+            COMMAND ${NPM_EXECUTABLE} run generate:api
+            COMMAND ${CMAKE_COMMAND} -E touch ${OPENAPI_STAMP}
+            WORKING_DIRECTORY ${WEB_SRC_DIR}
+            DEPENDS ${OPENAPI_SPEC}
+            COMMENT "Generating API client from OpenAPI spec (openapi.yaml changed)"
+            VERBATIM
+            USES_TERMINAL
+        )
+    else()
+        # Create a dummy stamp file if OpenAPI files already exist
+        add_custom_command(
+            OUTPUT ${OPENAPI_STAMP}
+            COMMAND ${CMAKE_COMMAND} -E touch ${OPENAPI_STAMP}
+            COMMENT "OpenAPI files already exist, skipping generation"
+        )
+    endif()
 
     # Collect all frontend source files to track dependencies
     file(GLOB_RECURSE WEB_UI_SOURCES

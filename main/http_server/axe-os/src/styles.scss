@@ -11,7 +11,12 @@
 }
 
 @import "app/layout/styles/layout/layout.scss";
+
+// Theme Selection - Change to 'modern' for modern theme
+// Default: bitaxe
+// Options: bitaxe, modern
 @import "app/layout/styles/theme/themes/vela/bitaxe/theme.scss";
+// @import "app/layout/styles/theme/themes/modern/theme.scss";
 
 @import "app/layout/styles/modules/primeicons.css";
 @import "app/layout/styles/modules/primeng.min.css";

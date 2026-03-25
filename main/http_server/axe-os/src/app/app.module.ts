@@ -41,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService as PrimeDialogService } from 'primeng/dynamicdialog';
 import { DialogService, DialogListComponent } from './services/dialog.service';
+import { AsicHealthComponent } from './components/asic-health/asic-health.component';
 
 const components = [
   AppComponent,
@@ -57,7 +58,8 @@ const components = [
   LogsComponent,
   SystemComponent,
   UpdateComponent,
-  PoolComponent
+  PoolComponent,
+  AsicHealthComponent
 ];
 
 @NgModule({

@@ -1,0 +1,154 @@
+// Modern Theme Extensions - Custom styling for modern design
+// Enhanced shadows and smooth transitions
+
+.card {
+    background: linear-gradient(135deg, $shade800 0%, lighten($shade800, 2%) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 
+                0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba($primaryColor, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                    0 2px 8px rgba(0, 0, 0, 0.12);
+        border-color: rgba($primaryColor, 0.2);
+        transform: translateY(-2px);
+    }
+}
+
+// Modern button styles
+.p-button {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+
+    &.p-button-primary {
+        background: linear-gradient(135deg, $primaryColor 0%, $primaryDarkColor 100%);
+        border: none;
+        box-shadow: 0 4px 15px rgba($primaryColor, 0.3);
+
+        &:hover {
+            box-shadow: 0 6px 24px rgba($primaryColor, 0.4);
+            transform: translateY(-2px);
+        }
+    }
+
+    &.p-button-outlined {
+        border: 1.5px solid rgba($primaryColor, 0.5);
+        color: $primaryLightColor;
+
+        &:hover {
+            background: rgba($primaryColor, 0.08);
+            border-color: $primaryColor;
+        }
+    }
+}
+
+// Modern input styling
+.p-inputtext,
+.p-inputnumber-input,
+.p-dropdown,
+.p-multiselect {
+    background: rgba($shade900, 0.8);
+    border: 1.5px solid rgba($shade600, 0.5);
+    border-radius: 6px;
+    padding: $inputPadding;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: $shade000;
+
+    &:hover {
+        border-color: rgba($primaryColor, 0.3);
+        background: rgba($shade900, 0.95);
+    }
+
+    &:focus {
+        border-color: $primaryColor;
+        box-shadow: 0 0 0 3px rgba($primaryColor, 0.1), 
+                    0 0 0 1px $primaryColor;
+        outline: none;
+    }
+}
+
+// Modern chart styling
+p-chart > div {
+    background: linear-gradient(135deg, $shade800 0%, lighten($shade800, 1%) 100%);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+// Modern header styling
+.layout-topbar {
+    background: linear-gradient(135deg, $shade900 0%, lighten($shade900, 2%) 100%);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba($primaryColor, 0.1);
+}
+
+// Modern sidebar
+.layout-sidebar {
+    background: linear-gradient(180deg, $shade800 0%, lighten($shade800, 1%) 100%);
+    border-right: 1px solid rgba($primaryColor, 0.1);
+}
+
+// Modern menu items with better hover states
+.layout-menu-container {
+    .p-menuitem {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            background: rgba($primaryColor, 0.08);
+            border-left: 3px solid $primaryColor;
+            padding-left: calc(1rem - 3px);
+        }
+
+        &.p-menuitem-active {
+            background: rgba($primaryColor, 0.12);
+            border-left: 3px solid $primaryColor;
+            padding-left: calc(1rem - 3px);
+
+            > .p-menuitem-content {
+                color: $primaryLightColor;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Modern dialog/modal styling
+.p-dialog {
+    .p-dialog-header {
+        background: linear-gradient(135deg, $shade800 0%, lighten($shade800, 1%) 100%);
+        border-bottom: 1px solid rgba($primaryColor, 0.1);
+    }
+
+    .p-dialog-content {
+        background: $shade800;
+    }
+}
+
+// Smooth animations
+.fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Modern focus ring style
+*:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primaryColor, 0.1), 
+                0 0 0 1px $primaryColor;
+    border-radius: 4px;
+}
