@@ -1,16 +1,95 @@
-// Modern Theme Variables - Contemporary Design
-// Primary: Vibrant Purple-Blue with modern accents
-$primaryColor: #6366f1 !default; // Indigo
-$primaryLightColor: #818cf8 !default; // Light Indigo
-$primaryDarkColor: #4f46e5 !default; // Dark Indigo
-$primaryDarkerColor: #3730a3 !default; // Darker Indigo
-$primaryTextColor: white !default;
+// Modern Theme Variables
+// Sleek, dark theme with modern colors and smooth animations
 
-// Modern highlights with better contrast
-$highlightBg: rgba(99, 102, 241, 0.12) !default;
-$highlightTextColor: rgba(255, 255, 255, 0.95) !default;
+// Primary Colors
+$primaryColor: #6366f1 !default; // Modern indigo
+$primaryLightColor: #818cf8 !default;
+$primaryDarkColor: #4f46e5 !default;
+$primaryDarkerColor: #3730a3 !default;
+$primaryTextColor: #ffffff !default;
+
+// Secondary Colors
+$secondaryColor: #06b6d4 !default; // Cyan
+$secondaryLightColor: #22d3ee !default;
+$secondaryDarkColor: #0891b2 !default;
+
+// Success Colors
+$successColor: #10b981 !default; // Emerald
+$successLightColor: #34d399 !default;
+$successDarkColor: #059669 !default;
+
+// Warning Colors
+$warningColor: #f59e0b !default; // Amber
+$warningLightColor: #fbbf24 !default;
+$warningDarkColor: #d97706 !default;
+
+// Error Colors
+$errorColor: #ef4444 !default; // Red
+$errorLightColor: #f87171 !default;
+$errorDarkColor: #dc2626 !default;
+
+// Background Colors
+$bgColor: #0f172a !default; // Slate-900
+$bgSecondaryColor: #1e293b !default; // Slate-800
+$bgTertiaryColor: #334155 !default; // Slate-700
+$bgCardColor: rgba(30, 41, 59, 0.8) !default; // Slate-800 with transparency
+
+// Text Colors
+$textColor: #f1f5f9 !default; // Slate-100
+$textSecondaryColor: #cbd5e1 !default; // Slate-300
+$textMutedColor: #64748b !default; // Slate-500
+
+// Border Colors
+$borderColor: #334155 !default; // Slate-700
+$borderLightColor: #475569 !default; // Slate-600
+
+// Highlight Colors
+$highlightBg: rgba(99, 102, 241, 0.1) !default;
+$highlightTextColor: #ffffff !default;
 $highlightFocusBg: rgba(99, 102, 241, 0.2) !default;
 
-$inputPadding: 0.625rem 0.875rem !default;
+// Input Styles
+$inputPadding: 0.75rem 1rem !default;
+$inputBorderRadius: 0.5rem !default;
+$inputBgColor: #1e293b !default;
+$inputBorderColor: #334155 !default;
+$inputFocusBorderColor: $primaryColor !default;
 
-@import '../_variables';
+// Card Styles
+$cardBorderRadius: 1rem !default;
+$cardShadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$cardHoverShadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+
+// Button Styles
+$buttonBorderRadius: 0.5rem !default;
+$buttonPadding: 0.5rem 1rem !default;
+$buttonTransition: all 0.2s ease-in-out !default;
+
+// Animation Variables
+$transitionFast: 0.15s ease-in-out !default;
+$transitionNormal: 0.3s ease-in-out !default;
+$transitionSlow: 0.5s ease-in-out !default;
+
+// Spacing
+$spacingXs: 0.25rem !default;
+$spacingSm: 0.5rem !default;
+$spacingMd: 1rem !default;
+$spacingLg: 1.5rem !default;
+$spacingXl: 2rem !default;
+$spacing2xl: 3rem !default;
+
+// Typography
+$fontFamily: 'Inter', 'Nippo-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !default;
+$fontSizeXs: 0.75rem !default;
+$fontSizeSm: 0.875rem !default;
+$fontSizeBase: 1rem !default;
+$fontSizeLg: 1.125rem !default;
+$fontSizeXl: 1.25rem !default;
+$fontSize2xl: 1.5rem !default;
+$fontSize3xl: 1.875rem !default;
+$fontSize4xl: 2.25rem !default;
+
+// Import base vela variables for compatibility
+@import '../vela/_variables';
+$actionIconTransition: background-color $transitionDuration,
+    color $transitionDuration, box-shadow $transitionDuration !default;

@@ -21,11 +21,11 @@ export class GithubUpdateService {
   ) { }
 
 
-  public getReleases(): Observable<GithubRelease[]> {
+  public getReleases(includePrereleases: boolean = false): Observable<GithubRelease[]> {
     return this.httpClient.get<GithubRelease[]>(
       'https://api.github.com/repos/bitaxeorg/esp-miner/releases'
     ).pipe(
-      map((releases: GithubRelease[]) => releases.filter((release: GithubRelease) => !release.prerelease))
+      map((releases: GithubRelease[]) => includePrereleases ? releases : releases.filter((release: GithubRelease) => !release.prerelease))
     );
   }
 

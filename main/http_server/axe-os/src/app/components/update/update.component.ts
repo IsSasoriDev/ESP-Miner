@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Observable, switchMap, shareReplay, map, timer, distinctUntilChanged } from 'rxjs';
-import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploadHandlerEvent, FileUpload } from 'primeng/fileupload';
 import { GithubUpdateService } from 'src/app/services/github-update.service';
@@ -26,6 +26,12 @@ export class UpdateComponent {
 
   public info$: Observable<any>;
 
+  // Auto-update properties
+  public showPrereleases: boolean = false;
+  public selectedRelease: any = null;
+  public availableReleases$: Observable<any[]>;
+  public autoUpdateInProgress: boolean = false;
+
   @ViewChild('firmwareUpload') firmwareUpload!: FileUpload;
   @ViewChild('websiteUpload') websiteUpload!: FileUpload;
 
@@ -37,10 +43,13 @@ export class UpdateComponent {
     private loadingService: LoadingService,
     private githubUpdateService: GithubUpdateService,
     private localStorageService: LocalStorageService,
+    private httpClient: HttpClient,
   ) {
     this.latestRelease$ = this.githubUpdateService.getReleases().pipe(map(releases => {
       return releases[0];
     }));
+
+    this.availableReleases$ = this.githubUpdateService.getReleases(true); // Include prereleases by default for auto-update
 
     this.info$ = timer(0, 5000).pipe(
       switchMap(() => this.systemService.getInfo()),
@@ -161,5 +170,130 @@ export class UpdateComponent {
     }
 
     this.localStorageService.setBool(IGNORE_RELEASE_CHECK_WARNING, true);
+  }
+
+  public onPrereleaseToggle(): void {
+    this.availableReleases$ = this.githubUpdateService.getReleases(this.showPrereleases);
+  }
+
+  public performAutoUpdate(): void {
+    if (!this.selectedRelease) {
+      this.toastrService.error('Please select a release to update to.');
+      return;
+    }
+
+    this.autoUpdateInProgress = true;
+
+    // Find the assets
+    const firmwareAsset = this.selectedRelease.assets.find((asset: any) =>
+      asset.name.includes('esp-miner') && asset.name.endsWith('.bin')
+    );
+
+    const wwwAsset = this.selectedRelease.assets.find((asset: any) =>
+      asset.name === 'www.bin'
+    );
+
+    if (!firmwareAsset) {
+      this.toastrService.error('Firmware file (esp-miner*.bin) not found for the selected release.');
+      this.autoUpdateInProgress = false;
+      return;
+    }
+
+    if (!wwwAsset) {
+      this.toastrService.error('Website file (www.bin) not found for the selected release.');
+      this.autoUpdateInProgress = false;
+      return;
+    }
+
+    // Download firmware
+    this.downloadFile(firmwareAsset.browser_download_url).subscribe({
+      next: (firmwareBlob) => {
+        const firmwareFile = new File([firmwareBlob], 'esp-miner.bin', { type: 'application/octet-stream' });
+
+        // Update firmware
+        this.performOTAUpdateInternal(firmwareFile).subscribe({
+          next: (event) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.firmwareUpdateProgress = Math.round((event.loaded / (event.total as number)) * 100);
+            } else if (event.type === HttpEventType.Response) {
+              if (event.ok) {
+                // Firmware updated, now download and update website
+                this.downloadFile(wwwAsset.browser_download_url).subscribe({
+                  next: (wwwBlob) => {
+                    const wwwFile = new File([wwwBlob], 'www.bin', { type: 'application/octet-stream' });
+
+                    // Update website
+                    this.performWWWUpdateInternal(wwwFile).subscribe({
+                      next: (wwwEvent) => {
+                        if (wwwEvent.type === HttpEventType.UploadProgress) {
+                          this.websiteUpdateProgress = Math.round((wwwEvent.loaded / (wwwEvent.total as number)) * 100);
+                        } else if (wwwEvent.type === HttpEventType.Response) {
+                          if (wwwEvent.ok) {
+                            this.toastrService.success('Auto-update completed successfully! Device will restart.');
+                            this.autoUpdateInProgress = false;
+                          } else {
+                            this.toastrService.error(wwwEvent.statusText);
+                            this.autoUpdateInProgress = false;
+                          }
+                        } else if (wwwEvent instanceof HttpErrorResponse) {
+                          const errorMessage = wwwEvent.error?.message || wwwEvent.message || 'Unknown error occurred';
+                          this.toastrService.error('Website update failed: ' + errorMessage);
+                          this.autoUpdateInProgress = false;
+                        }
+                      },
+                      error: (err) => {
+                        const errorMessage = err.error?.message || err.message || 'Unknown error occurred';
+                        this.toastrService.error('Website update failed: ' + errorMessage);
+                        this.autoUpdateInProgress = false;
+                      },
+                      complete: () => {
+                        this.websiteUpdateProgress = null;
+                      }
+                    });
+                  },
+                  error: (error) => {
+                    this.toastrService.error('Failed to download website file: ' + error.message);
+                    this.autoUpdateInProgress = false;
+                  }
+                });
+              } else {
+                this.toastrService.error(event.statusText);
+                this.autoUpdateInProgress = false;
+              }
+            } else if (event instanceof HttpErrorResponse) {
+              this.toastrService.error('Firmware update failed: ' + event.error);
+              this.autoUpdateInProgress = false;
+            }
+          },
+          error: (err) => {
+            this.toastrService.error('Firmware update failed: ' + err.error);
+            this.autoUpdateInProgress = false;
+          },
+          complete: () => {
+            this.firmwareUpdateProgress = null;
+          }
+        });
+      },
+      error: (error) => {
+        this.toastrService.error('Failed to download firmware file: ' + error.message);
+        this.autoUpdateInProgress = false;
+      }
+    });
+  }
+
+  private downloadFile(url: string): Observable<Blob> {
+    return this.httpClient.get(url, {
+      responseType: 'blob'
+    });
+  }
+
+  private performOTAUpdateInternal(file: File): Observable<any> {
+    return this.systemService.performOTAUpdate(file)
+      .pipe(this.loadingService.lockUIUntilComplete());
+  }
+
+  private performWWWUpdateInternal(file: File): Observable<any> {
+    return this.systemService.performWWWOTAUpdate(file)
+      .pipe(this.loadingService.lockUIUntilComplete());
   }
 }

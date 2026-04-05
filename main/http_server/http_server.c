@@ -969,7 +969,9 @@ static esp_err_t GET_system_info(httpd_req_t * req)
 
     cJSON_AddFloatToObject(root, "fanspeed", GLOBAL_STATE->POWER_MANAGEMENT_MODULE.fan_perc);
     cJSON_AddNumberToObject(root, "manualFanSpeed", nvs_config_get_u16(NVS_CONFIG_MANUAL_FAN_SPEED));
+    cJSON_AddNumberToObject(root, "manualFan2Speed", nvs_config_get_u16(NVS_CONFIG_MANUAL_FAN2_SPEED));
     cJSON_AddNumberToObject(root, "minFanSpeed", nvs_config_get_u16(NVS_CONFIG_MIN_FAN_SPEED));
+    cJSON_AddNumberToObject(root, "minFan2Speed", nvs_config_get_u16(NVS_CONFIG_MIN_FAN2_SPEED));
     cJSON_AddNumberToObject(root, "temptarget", nvs_config_get_u16(NVS_CONFIG_TEMP_TARGET));
     cJSON_AddNumberToObject(root, "fanrpm", GLOBAL_STATE->POWER_MANAGEMENT_MODULE.fan_rpm);
     cJSON_AddNumberToObject(root, "fan2rpm", GLOBAL_STATE->POWER_MANAGEMENT_MODULE.fan2_rpm);

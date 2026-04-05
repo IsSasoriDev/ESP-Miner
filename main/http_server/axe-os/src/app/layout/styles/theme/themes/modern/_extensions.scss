@@ -1,62 +1,479 @@
-// Modern Theme Extensions - Custom styling for modern design
-// Enhanced shadows and smooth transitions
+// Modern Theme Extensions
+// Sleek UI components with animations and modern styling
 
+@import '../../vela/_extensions';
+
+// Global animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+// Modern card styling
 .card {
-    background: linear-gradient(135deg, $shade800 0%, lighten($shade800, 2%) 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 
-                0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba($primaryColor, 0.1);
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: $bgCardColor;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $cardBorderRadius;
+  box-shadow: $cardShadow;
+  transition: all $transitionNormal;
+  animation: fadeInUp 0.6s ease-out;
 
-    &:hover {
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
-                    0 2px 8px rgba(0, 0, 0, 0.12);
-        border-color: rgba($primaryColor, 0.2);
-        transform: translateY(-2px);
-    }
+  &:hover {
+    box-shadow: $cardHoverShadow;
+    border-color: rgba($primaryColor, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    border-bottom: 1px solid $borderColor;
+    padding: $spacingLg;
+    background: linear-gradient(135deg, rgba($primaryColor, 0.05) 0%, rgba($secondaryColor, 0.05) 100%);
+  }
+
+  .card-body {
+    padding: $spacingLg;
+  }
+
+  .card-footer {
+    border-top: 1px solid $borderColor;
+    padding: $spacingLg;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $textColor;
+    font-weight: 600;
+    margin-bottom: $spacingMd;
+    background: linear-gradient(135deg, $primaryColor 0%, $secondaryColor 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 // Modern button styles
 .p-button {
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.875rem;
+  border-radius: $buttonBorderRadius;
+  font-weight: 500;
+  transition: $buttonTransition;
+  text-transform: none;
+  letter-spacing: 0.025em;
+  font-size: $fontSizeSm;
+  position: relative;
+  overflow: hidden;
 
-    &.p-button-primary {
-        background: linear-gradient(135deg, $primaryColor 0%, $primaryDarkColor 100%);
-        border: none;
-        box-shadow: 0 4px 15px rgba($primaryColor, 0.3);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
 
-        &:hover {
-            box-shadow: 0 6px 24px rgba($primaryColor, 0.4);
-            transform: translateY(-2px);
-        }
+  &:hover::before {
+    left: 100%;
+  }
+
+  &.p-button-primary {
+    background: linear-gradient(135deg, $primaryColor 0%, $primaryDarkColor 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba($primaryColor, 0.3);
+    color: $primaryTextColor;
+
+    &:hover {
+      box-shadow: 0 6px 24px rgba($primaryColor, 0.4);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, $primaryLightColor 0%, $primaryColor 100%);
     }
 
-    &.p-button-outlined {
-        border: 1.5px solid rgba($primaryColor, 0.5);
-        color: $primaryLightColor;
-
-        &:hover {
-            background: rgba($primaryColor, 0.08);
-            border-color: $primaryColor;
-        }
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba($primaryColor, 0.3);
     }
+  }
+
+  &.p-button-secondary {
+    background: linear-gradient(135deg, $bgSecondaryColor 0%, $bgTertiaryColor 100%);
+    border: 1px solid $borderColor;
+    color: $textColor;
+
+    &:hover {
+      background: linear-gradient(135deg, $bgTertiaryColor 0%, $bgSecondaryColor 100%);
+      border-color: $primaryColor;
+      color: $primaryLightColor;
+    }
+  }
+
+  &.p-button-success {
+    background: linear-gradient(135deg, $successColor 0%, $successDarkColor 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba($successColor, 0.3);
+
+    &:hover {
+      box-shadow: 0 6px 24px rgba($successColor, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.p-button-danger {
+    background: linear-gradient(135deg, $errorColor 0%, $errorDarkColor 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba($errorColor, 0.3);
+
+    &:hover {
+      box-shadow: 0 6px 24px rgba($errorColor, 0.4);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.p-button-outlined {
+    background: transparent;
+    border: 1.5px solid rgba($primaryColor, 0.5);
+    color: $primaryLightColor;
+
+    &:hover {
+      background: rgba($primaryColor, 0.08);
+      border-color: $primaryColor;
+      color: $primaryColor;
+    }
+  }
+
+  .p-button-loading-icon {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
 }
 
 // Modern input styling
 .p-inputtext,
 .p-inputnumber-input,
+.p-password-input,
 .p-dropdown,
-.p-multiselect {
-    background: rgba($shade900, 0.8);
-    border: 1.5px solid rgba($shade600, 0.5);
-    border-radius: 6px;
-    padding: $inputPadding;
+.p-multiselect,
+.p-calendar,
+.p-inputtextarea {
+  background: $inputBgColor;
+  border: 1.5px solid $inputBorderColor;
+  border-radius: $inputBorderRadius;
+  padding: $inputPadding;
+  color: $textColor;
+  transition: all $transitionFast;
+  font-size: $fontSizeBase;
+
+  &::placeholder {
+    color: $textMutedColor;
+  }
+
+  &:focus {
+    border-color: $inputFocusBorderColor;
+    box-shadow: 0 0 0 3px rgba($primaryColor, 0.1);
+    outline: none;
+  }
+
+  &:hover:not(:focus) {
+    border-color: $borderLightColor;
+  }
+}
+
+// Dropdown styling
+.p-dropdown {
+  .p-dropdown-trigger {
+    color: $textSecondaryColor;
+  }
+
+  &.p-focus {
+    box-shadow: 0 0 0 3px rgba($primaryColor, 0.1);
+  }
+}
+
+// Checkbox styling
+.p-checkbox {
+  .p-checkbox-box {
+    border: 2px solid $borderColor;
+    background: $bgSecondaryColor;
+    border-radius: 4px;
+    transition: all $transitionFast;
+
+    &.p-highlight {
+      background: $primaryColor;
+      border-color: $primaryColor;
+
+      &::after {
+        color: $primaryTextColor;
+      }
+    }
+
+    &:hover {
+      border-color: $primaryLightColor;
+    }
+  }
+}
+
+// Progress bar styling
+.p-progressbar {
+  background: $bgTertiaryColor;
+  border-radius: 8px;
+  height: 8px;
+
+  .p-progressbar-value {
+    background: linear-gradient(90deg, $primaryColor 0%, $secondaryColor 100%);
+    border-radius: 8px;
+    animation: shimmer 2s infinite;
+    background-size: 200px 100%;
+  }
+}
+
+// Tag styling
+.p-tag {
+  border-radius: 20px;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  font-size: $fontSizeXs;
+
+  &.p-tag-success {
+    background: rgba($successColor, 0.1);
+    color: $successLightColor;
+    border: 1px solid rgba($successColor, 0.2);
+  }
+
+  &.p-tag-warning {
+    background: rgba($warningColor, 0.1);
+    color: $warningLightColor;
+    border: 1px solid rgba($warningColor, 0.2);
+  }
+
+  &.p-tag-danger {
+    background: rgba($errorColor, 0.1);
+    color: $errorLightColor;
+    border: 1px solid rgba($errorColor, 0.2);
+  }
+}
+
+// File upload styling
+.p-fileupload {
+  .p-fileupload-buttonbar {
+    background: $bgSecondaryColor;
+    border-bottom: 1px solid $borderColor;
+    padding: $spacingMd;
+    border-radius: $cardBorderRadius $cardBorderRadius 0 0;
+  }
+
+  .p-fileupload-content {
+    background: $bgColor;
+    border: 1px solid $borderColor;
+    border-radius: 0 0 $cardBorderRadius $cardBorderRadius;
+  }
+}
+
+// Modal styling
+.p-dialog {
+  background: $bgCardColor;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $cardBorderRadius;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  .p-dialog-header {
+    background: linear-gradient(135deg, rgba($primaryColor, 0.05) 0%, rgba($secondaryColor, 0.05) 100%);
+    border-bottom: 1px solid $borderColor;
+    padding: $spacingLg;
+
+    .p-dialog-title {
+      color: $textColor;
+      font-weight: 600;
+    }
+
+    .p-dialog-header-close {
+      color: $textSecondaryColor;
+
+      &:hover {
+        color: $textColor;
+      }
+    }
+  }
+
+  .p-dialog-content {
+    padding: $spacingLg;
+    color: $textSecondaryColor;
+  }
+
+  .p-dialog-footer {
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid $borderColor;
+    padding: $spacingLg;
+  }
+}
+
+// Sidebar styling
+.layout-sidebar {
+  background: $bgSecondaryColor;
+  border-right: 1px solid $borderColor;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+
+  .layout-menu {
+    .layout-menuitem {
+      margin: $spacingXs;
+
+      .layout-menuitem-link {
+        border-radius: 8px;
+        padding: $spacingMd;
+        transition: all $transitionFast;
+        color: $textSecondaryColor;
+
+        &:hover {
+          background: rgba($primaryColor, 0.1);
+          color: $primaryLightColor;
+          transform: translateX(4px);
+        }
+
+        &.router-link-active {
+          background: linear-gradient(135deg, $primaryColor 0%, $primaryDarkColor 100%);
+          color: $primaryTextColor;
+          box-shadow: 0 4px 15px rgba($primaryColor, 0.3);
+        }
+      }
+    }
+  }
+}
+
+// Topbar styling
+.layout-topbar {
+  background: $bgSecondaryColor;
+  border-bottom: 1px solid $borderColor;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .layout-topbar-logo {
+    color: $primaryColor;
+    font-weight: 600;
+  }
+}
+
+// Loading animation
+.layout-loading {
+  .layout-loading-content {
+    background: $bgCardColor;
+    backdrop-filter: blur(10px);
+    border-radius: $cardBorderRadius;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+// Table styling
+.p-datatable {
+  .p-datatable-thead > tr > th {
+    background: $bgSecondaryColor;
+    border-color: $borderColor;
+    color: $textColor;
+    font-weight: 600;
+    padding: $spacingMd;
+  }
+
+  .p-datatable-tbody > tr {
+    background: $bgColor;
+    border-color: $borderColor;
+    transition: all $transitionFast;
+
+    &:hover {
+      background: $bgSecondaryColor;
+    }
+
+    > td {
+      padding: $spacingMd;
+      color: $textSecondaryColor;
+      border-color: $borderColor;
+    }
+  }
+}
+
+// Form styling
+.p-field {
+  margin-bottom: $spacingLg;
+
+  label {
+    color: $textColor;
+    font-weight: 500;
+    margin-bottom: $spacingSm;
+    display: block;
+  }
+}
+
+// Utility classes
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, $bgSecondaryColor 0%, $bgColor 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, $primaryColor 0%, $secondaryColor 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .card {
+    margin: $spacingMd;
+    border-radius: 12px;
+  }
+
+  .p-button {
+    width: 100%;
+    margin-bottom: $spacingSm;
+  }
+}
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: $shade000;
 

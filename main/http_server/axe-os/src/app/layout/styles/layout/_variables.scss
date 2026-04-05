@@ -1,7 +1,38 @@
-/* General */
-$scale:14px;                    /* main font size */
-$borderRadius:0px;             /* border radius of layout element e.g. card, sidebar */
-$transitionDuration:.2s;        /* transition duration of layout elements e.g. sidebar, overlay menus */
+/* Modern AxeOS Design System */
 
-$tooltipBg: var(--surface-d);
-$borderRadius: 2px;
+/* Core Layout */
+$scale: 16px;
+$borderRadius: 12px;
+$transitionDuration: 0.3s;
+$easeInOut: cubic-bezier(0.4, 0, 0.2, 1);
+
+/* Color Palette - Modern Dark Mode */
+$primaryGradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$accentColor: #00d4ff;
+$accentColorLight: #00f0ff;
+$successColor: #10b981;
+$warningColor: #f59e0b;
+$dangerColor: #ef4444;
+
+/* Dark Mode Colors */
+$bgPrimary: #0a0e27;
+$bgSecondary: #131829;
+$bgTertiary: #1a1f3a;
+$bgCard: rgba(19, 24, 41, 0.6);
+$bgCardHover: rgba(30, 38, 66, 0.8);
+
+$textPrimary: #ffffff;
+$textSecondary: #cbd5e1;
+$textMuted: #94a3b8;
+$borderColor: rgba(100, 116, 139, 0.2);
+$borderColorLight: rgba(148, 163, 184, 0.3);
+
+/* Shadows */
+$shadowSm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+$shadowMd: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+$shadowLg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+$shadowXl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+$shadowGlow: 0 0 20px rgba(102, 126, 234, 0.3);
+
+$tooltipBg: $bgTertiary;
+

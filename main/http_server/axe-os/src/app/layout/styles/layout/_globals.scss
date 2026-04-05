@@ -1,0 +1,351 @@
+/* Modern AxeOS Globals */
+
+/* Text Utilities */
+.text-color {
+    color: $textPrimary !important;
+}
+
+.text-secondary {
+    color: $textSecondary !important;
+}
+
+.text-muted {
+    color: $textMuted !important;
+}
+
+.text-accent {
+    color: $accentColor !important;
+}
+
+/* Background Utilities */
+.bg-primary {
+    background: $primaryGradient !important;
+}
+
+.bg-secondary {
+    background: $bgSecondary !important;
+}
+
+.bg-tertiary {
+    background: $bgTertiary !important;
+}
+
+.bg-glass {
+    background: rgba(19, 24, 41, 0.4) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid $borderColor;
+}
+
+/* Spacing Utilities */
+.p-3 {
+    padding: 1rem !important;
+}
+
+.p-4 {
+    padding: 1.5rem !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
+}
+
+.gap-3 {
+    gap: 1rem !important;
+}
+
+/* Display Utilities */
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+/* Input Styles */
+input, textarea, select {
+    background-color: $bgCard !important;
+    border: 1px solid $borderColor !important;
+    color: $textPrimary !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    transition: all $transitionDuration $easeInOut !important;
+
+    &:focus {
+        outline: none !important;
+        border-color: $accentColor !important;
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1) !important;
+        background-color: $bgCardHover !important;
+    }
+
+    &::placeholder {
+        color: $textMuted !important;
+    }
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Badge/Tag Styles */
+.p-tag {
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.8rem !important;
+    transition: all $transitionDuration $easeInOut !important;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+}
+
+/* Form Group */
+.p-field {
+    margin-bottom: 1.5rem;
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: $textSecondary;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+}
+
+/* Checkbox & Radio */
+.p-checkbox-box,
+.p-radiobutton-box {
+    border-color: $borderColor !important;
+    background-color: $bgCard !important;
+
+    &:hover {
+        border-color: $accentColor !important;
+    }
+}
+
+.p-checkbox:checked .p-checkbox-box,
+.p-radiobutton:checked .p-radiobutton-box {
+    background: $primaryGradient !important;
+    border-color: $primaryGradient !important;
+}
+
+/* Dropdown */
+.p-dropdown {
+    background-color: $bgCard !important;
+    border: 1px solid $borderColor !important;
+    color: $textPrimary !important;
+    border-radius: 8px !important;
+
+    &:hover {
+        border-color: $borderColorLight !important;
+    }
+
+    &:focus {
+        outline: none !important;
+        border-color: $accentColor !important;
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1) !important;
+    }
+}
+
+.p-dropdown-panel {
+    background-color: $bgTertiary !important;
+    border: 1px solid $borderColor !important;
+
+    .p-dropdown-item {
+        color: $textSecondary !important;
+
+        &:hover {
+            background-color: $bgCard !important;
+            color: $accentColor !important;
+        }
+
+        &.p-highlight {
+            background: $primaryGradient !important;
+            color: white !important;
+        }
+    }
+}
+
+/* Slider */
+.p-slider {
+    background-color: $bgCard !important;
+
+    .p-slider-handle {
+        background: $primaryGradient !important;
+        border: 2px solid $accentColor !important;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.3) !important;
+    }
+
+    .p-slider-range {
+        background: $primaryGradient !important;
+    }
+}
+
+/* Dialog/Modal */
+.p-dialog {
+    .p-dialog-header {
+        background-color: $bgSecondary !important;
+        border-bottom: 1px solid $borderColor !important;
+        padding: 1.5rem !important;
+    }
+
+    .p-dialog-content {
+        background-color: $bgTertiary !important;
+        color: $textSecondary !important;
+    }
+}
+
+/* Tooltip */
+.p-tooltip {
+    .p-tooltip-text {
+        background-color: $bgSecondary !important;
+        color: $textSecondary !important;
+        border: 1px solid $borderColor !important;
+    }
+}
+
+/* Message/Toast */
+.p-message {
+    border-radius: 8px !important;
+    border-left: 4px solid;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: $accentColor !important;
+
+    &.p-message-success {
+        border-color: $successColor !important;
+    }
+
+    &.p-message-error {
+        border-color: $dangerColor !important;
+    }
+
+    &.p-message-warning {
+        border-color: $warningColor !important;
+    }
+}
+
+/* FileUpload */
+.p-fileupload {
+    .p-fileupload-choose {
+        background: $primaryGradient !important;
+        border: none !important;
+    }
+}
+
+.p-fileupload-content {
+    background-color: $bgCard !important;
+    border: 2px dashed $borderColorLight !important;
+    border-radius: 8px !important;
+    padding: 2rem !important;
+    text-align: center;
+
+    &:hover {
+        border-color: $accentColor !important;
+        background-color: rgba(0, 212, 255, 0.05) !important;
+    }
+}
+
+/* Progress Bar Custom */
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: $bgCard;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid $borderColor;
+}
+
+.progress-bar {
+    height: 100%;
+    background: $primaryGradient;
+    border-radius: 4px;
+    transition: width 0.3s $easeInOut;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: $bgCard;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $borderColorLight;
+    border-radius: 4px;
+
+    &:hover {
+        background: $textMuted;
+    }
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeInUp 0.4s $easeInOut forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.4s $easeInOut forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.4s $easeInOut forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+    }
+
+    .p-field {
+        margin-bottom: 1rem;
+    }
+}

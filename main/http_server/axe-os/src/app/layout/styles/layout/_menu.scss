@@ -23,16 +23,18 @@
     list-style-type: none;
 
     .layout-root-menuitem {
-        >.layout-menuitem-root-text {
-            font-size: .857rem;
+        > .layout-menuitem-root-text {
+            font-size: 0.7rem;
             text-transform: uppercase;
             font-weight: 700;
-            color: var(--surface-900);
-            margin: .5rem 0;
+            letter-spacing: 1.5px;
+            color: $textMuted;
+            margin: 1.5rem 0 0.75rem 0;
             line-height: 1.3rem;
+            padding: 0 1rem;
         }
 
-        >a {
+        > a {
             display: none;
         }
     }
@@ -41,14 +43,14 @@
         user-select: none;
 
         &.active-menuitem {
-            >.layout-submenu-toggler {
+            > .layout-submenu-toggler {
                 transform: rotate(-180deg);
             }
         }
     }
 
     li.active-menuitem {
-        >a {
+        > a {
             .layout-submenu-toggler {
                 transform: rotate(-180deg);
             }
@@ -63,70 +65,103 @@
         a {
             display: flex;
             align-items: center;
-            position: relative;
-            outline: 0 none;
-            color: var(--text-color);
+            outline: 0;
+            color: $textSecondary;
             cursor: pointer;
-            padding: .75rem 1rem;
-            border-radius: $borderRadius;
-            transition: background-color $transitionDuration, box-shadow $transitionDuration;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0.25rem 0;
+            transition: all $transitionDuration $easeInOut;
+            position: relative;
+            font-weight: 500;
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                border-radius: 0 3px 3px 0;
+                background: transparent;
+                transition: all $transitionDuration $easeInOut;
+            }
 
             .layout-menuitem-icon {
-                margin-right: .5rem;
+                margin-right: 0.75rem;
+                min-width: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0.8;
+                transition: opacity $transitionDuration $easeInOut;
             }
 
             .layout-submenu-toggler {
                 font-size: 75%;
                 margin-left: auto;
-                transition: transform $transitionDuration;
+                transition: transform $transitionDuration $easeInOut;
+                opacity: 0.6;
             }
 
             &.active-route {
                 font-weight: 700;
-                color: var(--primary-color);
+                color: $accentColor;
+                background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, transparent 100%);
+
+                &::before {
+                    background: $primaryGradient;
+                }
+
+                .layout-menuitem-icon {
+                    opacity: 1;
+                }
             }
 
             &:hover {
-                background-color: var(--surface-hover);
-            }
+                color: $accentColor;
+                background-color: $bgTertiary;
+                transform: translateX(4px);
 
-            &:focus {
-                @include focused-inset();
+                .layout-menuitem-icon {
+                    opacity: 1;
+                }
             }
         }
 
         ul {
             overflow: hidden;
-            border-radius: $borderRadius;
+            margin-top: 0.5rem;
 
             li {
                 a {
-                    margin-left: 1rem;
+                    padding-left: 2.5rem;
+                    font-size: 0.9rem;
                 }
 
                 li {
                     a {
-                        margin-left: 2rem;
+                        padding-left: 3.5rem;
                     }
 
                     li {
                         a {
-                            margin-left: 2.5rem;
+                            padding-left: 4.5rem;
                         }
 
                         li {
                             a {
-                                margin-left: 3rem;
+                                padding-left: 5.5rem;
                             }
 
                             li {
                                 a {
-                                    margin-left: 3.5rem;
+                                    padding-left: 6.5rem;
                                 }
 
                                 li {
                                     a {
-                                        margin-left: 4rem;
+                                        padding-left: 7.5rem;
                                     }
                                 }
                             }

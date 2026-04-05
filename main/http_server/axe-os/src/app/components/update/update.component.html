@@ -1,82 +1,285 @@
-<div class="card">
-    <h2>Update</h2>
+<div class="card fade-in">
+    <h2 class="text-gradient">Update Center</h2>
+
+    <!-- Auto-Update Section -->
+    <div class="grid">
+        <div class="col-12">
+            <div class="card glass-effect">
+                <h5 class="text-gradient">🚀 Automatic Update from GitHub</h5>
+                <p class="text-secondary mb-3">Automatically download and install updates from the official ESP-Miner repository with a single click.</p>
+
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <div class="p-field">
+                            <label for="showPrereleases" class="text-color font-medium mb-2 block">Include Prereleases</label>
+                            <p-checkbox
+                                inputId="showPrereleases"
+                                [(ngModel)]="showPrereleases"
+                                (onChange)="onPrereleaseToggle()"
+                                label="Show prerelease versions"
+                                class="fade-in">
+                            </p-checkbox>
+                            <small class="text-muted block mt-1">Include beta and development releases</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                        <div class="p-field">
+                            <label for="releaseSelect" class="text-color font-medium mb-2 block">Select Release</label>
+                            <p-dropdown
+                                inputId="releaseSelect"
+                                [options]="(availableReleases$ | async) || []"
+                                [(ngModel)]="selectedRelease"
+                                optionLabel="name"
+                                optionValue="this"
+                                placeholder="Choose a release version"
+                                [showClear]="true"
+                                class="fade-in">
+                                <ng-template let-release pTemplate="item">
+                                    <div class="flex align-items-center p-2">
+                                        <i class="pi pi-tag text-primary mr-2"></i>
+                                        <div>
+                                            <span class="font-medium text-color">{{release.name}}</span>
+                                            <div class="text-sm text-muted">
+                                                {{release.published_at | date:'short'}}
+                                            </div>
+                                        </div>
+                                        <p-tag *ngIf="release.prerelease" value="Prerelease" severity="warning" class="ml-auto"></p-tag>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-release pTemplate="selectedItem">
+                                    <div class="flex align-items-center">
+                                        <i class="pi pi-tag text-primary mr-2"></i>
+                                        <span class="text-color">{{release.name}}</span>
+                                        <p-tag *ngIf="release.prerelease" value="Prerelease" severity="warning" class="ml-2"></p-tag>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selected-release-info mt-4" *ngIf="selectedRelease">
+                    <div class="card bg-secondary p-3">
+                        <div class="flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-color mb-1">{{selectedRelease.name}}</h6>
+                                <p class="text-muted text-sm mb-0">Published {{selectedRelease.published_at | date:'medium'}}</p>
+                            </div>
+                            <div class="text-right">
+                                <p-tag *ngIf="selectedRelease.prerelease" value="Prerelease" severity="warning"></p-tag>
+                                <p-tag value="Stable" severity="success" *ngIf="!selectedRelease.prerelease"></p-tag>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-4 align-items-center">
+                    <p-button
+                        label="Update Automatically"
+                        icon="pi pi-cloud-download"
+                        [loading]="autoUpdateInProgress"
+                        [disabled]="!selectedRelease || autoUpdateInProgress"
+                        (onClick)="performAutoUpdate()"
+                        class="slide-in-right">
+                    </p-button>
+                    <div class="text-muted">
+                        <i class="pi pi-info-circle mr-1"></i>
+                        <small>This will download and install both firmware and website updates automatically</small>
+                    </div>
+                </div>
+
+                <!-- Progress indicators -->
+                <div class="mt-4" *ngIf="autoUpdateInProgress">
+                    <div class="grid">
+                        <div class="col-12 md:col-6">
+                            <div class="p-field">
+                                <label class="text-color font-medium">Firmware Update Progress</label>
+                                <div class="progress-bar-container mt-2">
+                                    <div class="progress-bar" [style.width.%]="firmwareUpdateProgress || 0"></div>
+                                </div>
+                                <small class="text-muted block mt-1">{{firmwareUpdateProgress || 0}}% complete</small>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6">
+                            <div class="p-field">
+                                <label class="text-color font-medium">Website Update Progress</label>
+                                <div class="progress-bar-container mt-2">
+                                    <div class="progress-bar" [style.width.%]="websiteUpdateProgress || 0"></div>
+                                </div>
+                                <small class="text-muted block mt-1">{{websiteUpdateProgress || 0}}% complete</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="grid">
         <div class="col-12 xl:col-4">
             <div class="card h-full">
-                <h5>Current Version: {{(info$ | async)?.version}}</h5>
+                <div class="card-header">
+                    <h5 class="text-gradient mb-0">
+                        <i class="pi pi-info-circle mr-2"></i>
+                        Current Version: {{(info$ | async)?.version}}
+                    </h5>
+                </div>
 
                 <ng-container *ngIf="checkLatestRelease == false; else afterCheck">
-                    <h3>Latest Release: <p-button (onClick)="handleReleaseCheck()">Check</p-button></h3>
+                    <div class="text-center p-4">
+                        <i class="pi pi-question-circle text-4xl text-muted mb-3 block"></i>
+                        <h3 class="text-color">Latest Release: <p-button (onClick)="handleReleaseCheck()" class="mt-2">Check Now</p-button></h3>
+                    </div>
 
-                    <app-modal [headline]="'Privacy Warning'">
-                        <p>
-                            Please note, this will connect to <strong>github.com</strong> to check for the latest release.
-                        </p>
-                        <p class="flex gap-2">
+                    <app-modal [headline]="'🔒 Privacy Notice'">
+                        <div class="text-center">
+                            <i class="pi pi-shield text-4xl text-primary mb-3 block"></i>
+                            <p class="text-color mb-3">
+                                This action will connect to <strong class="text-primary">github.com</strong> to check for the latest release.
+                            </p>
+                            <p class="text-muted">Your connection is secure and no personal data is transmitted.</p>
+                        </div>
+                        <div class="flex gap-2 mt-4">
                             <p-checkbox
                                 [binary]="true"
                                 inputId="ignoreWarning"
-                                #ignoreWarning></p-checkbox>
-                            <label for="ignoreWarning">Don't show again</label>
-                        </p>
-                        <div class="flex gap-3 mt-5">
-                            <p-button (onClick)="continueReleaseCheck(ignoreWarning.model)">Continue</p-button>
-                            <p-button styleClass="p-button-secondary" (onClick)="modalComponent.isVisible = false">Cancel</p-button>
+                                #ignoreWarning
+                                label="Don't show again">
+                            </p-checkbox>
+                        </div>
+                        <div class="flex gap-3 mt-4">
+                            <p-button (onClick)="continueReleaseCheck(ignoreWarning.model)" class="flex-1">
+                                <i class="pi pi-check mr-2"></i>
+                                Continue
+                            </p-button>
+                            <p-button styleClass="p-button-secondary" (onClick)="modalComponent.isVisible = false" class="flex-1">
+                                <i class="pi pi-times mr-2"></i>
+                                Cancel
+                            </p-button>
                         </div>
                     </app-modal>
                 </ng-container>
 
                 <ng-template #afterCheck>
                     <ng-container *ngIf="latestRelease$ | async as latestRelease">
-                        <h3>Latest Release:
-                            <a style="text-decoration: underline;" target="_blank"
-                            [href]="latestRelease.html_url">{{latestRelease.name}}</a>
-                        </h3>
+                        <div class="text-center p-4">
+                            <i class="pi pi-tag text-success text-3xl mb-2 block"></i>
+                            <h3 class="text-gradient mb-2">{{latestRelease.name}}</h3>
+                            <p class="text-muted text-sm">{{latestRelease.published_at | date:'medium'}}</p>
+                        </div>
 
-                        <div class="text-orange-500 mb-3">Download both files for update!</div>
+                        <div class="p-3 bg-warning-50 border-round mb-3">
+                            <i class="pi pi-exclamation-triangle text-warning mr-2"></i>
+                            <strong class="text-warning">Download both files</strong> for complete update
+                        </div>
 
-                        <div *ngFor="let asset of latestRelease.assets">
-                            <div *ngIf="asset.name == 'esp-miner.bin'">
-                                <a style="text-decoration: underline;" target="_blank"
-                                    [href]="asset.browser_download_url">esp-miner.bin</a>
-                            </div>
-                            <div *ngIf="asset.name == 'www.bin'">
-                                <a style="text-decoration: underline;" target="_blank"
-                                    [href]="asset.browser_download_url">www.bin</a>
+                        <div class="download-links">
+                            <div *ngFor="let asset of latestRelease.assets" class="mb-2">
+                                <div *ngIf="asset.name == 'esp-miner.bin'" class="p-3 border-1 border-round surface-100">
+                                    <div class="flex align-items-center justify-content-between">
+                                        <div class="flex align-items-center">
+                                            <i class="pi pi-microchip text-primary mr-2"></i>
+                                            <span class="font-medium text-color">{{asset.name}}</span>
+                                        </div>
+                                        <a style="text-decoration: none;" target="_blank"
+                                            [href]="asset.browser_download_url" class="p-button p-button-sm p-button-outlined">
+                                            <i class="pi pi-download mr-1"></i>
+                                            Download
+                                        </a>
+                                    </div>
+                                    <small class="text-muted block mt-1">{{asset.size | number}} bytes</small>
+                                </div>
+                                <div *ngIf="asset.name == 'www.bin'" class="p-3 border-1 border-round surface-100">
+                                    <div class="flex align-items-center justify-content-between">
+                                        <div class="flex align-items-center">
+                                            <i class="pi pi-globe text-secondary mr-2"></i>
+                                            <span class="font-medium text-color">{{asset.name}}</span>
+                                        </div>
+                                        <a style="text-decoration: none;" target="_blank"
+                                            [href]="asset.browser_download_url" class="p-button p-button-sm p-button-outlined">
+                                            <i class="pi pi-download mr-1"></i>
+                                            Download
+                                        </a>
+                                    </div>
+                                    <small class="text-muted block mt-1">{{asset.size | number}} bytes</small>
+                                </div>
                             </div>
                         </div>
 
-                        <a class="text-500 underline block mt-3 cursor-pointer" (click)="modalComponent.isVisible = true">
-                            Release Notes
-                        </a>
+                        <div class="text-center mt-3">
+                            <a class="p-button p-button-link text-primary" (click)="modalComponent.isVisible = true">
+                                <i class="pi pi-external-link mr-1"></i>
+                                View Release Notes
+                            </a>
+                        </div>
 
-                        <app-modal [headline]="latestRelease.name">
-                            <div [innerHTML]="simpleMarkdownParser(latestRelease.body)"></div>
+                        <app-modal [headline]="latestRelease.name + ' - Release Notes'">
+                            <div class="release-notes" [innerHTML]="simpleMarkdownParser(latestRelease.body)"></div>
                         </app-modal>
                     </ng-container>
                 </ng-template>
             </div>
         </div>
+
         <div class="col-12 lg:col-6 xl:col-4">
             <div class="card h-full">
-                <h3>Update AxeOS <span *ngIf="websiteUpdateProgress != null">{{websiteUpdateProgress}} %</span></h3>
+                <div class="card-header">
+                    <h5 class="text-gradient">
+                        <i class="pi pi-upload mr-2"></i>
+                        Update AxeOS
+                    </h5>
+                    <span *ngIf="websiteUpdateProgress != null" class="text-primary font-medium">{{websiteUpdateProgress}}%</span>
+                </div>
 
-                <p-fileUpload #websiteUpload [customUpload]="true" mode="basic" accept=".bin" (uploadHandler)="otaWWWUpdate($event)"
-                    [auto]="true" chooseLabel="Browse"></p-fileUpload>
+                <div class="p-4">
+                    <p-fileUpload #websiteUpload [customUpload]="true" mode="basic" accept=".bin" (uploadHandler)="otaWWWUpdate($event)"
+                        [auto]="true" chooseLabel="Select www.bin" class="w-full">
+                        <ng-template pTemplate="content">
+                            <div class="text-center p-4">
+                                <i class="pi pi-cloud-upload text-4xl text-muted mb-3 block"></i>
+                                <p class="text-muted mb-3">Drag and drop or click to select the website update file</p>
+                                <small class="text-muted">Only .bin files are accepted</small>
+                            </div>
+                        </ng-template>
+                    </p-fileUpload>
 
-                <small>(www.bin)</small>
+                    <div class="mt-3 p-3 bg-info-50 border-round">
+                        <i class="pi pi-info-circle text-info mr-2"></i>
+                        <small class="text-info">Upload <strong>www.bin</strong> to update the AxeOS web interface</small>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="col-12 lg:col-6 xl:col-4">
             <div class="card h-full">
-                <h3>Update Firmware <span *ngIf="firmwareUpdateProgress != null">{{firmwareUpdateProgress}} %</span></h3>
-                <p-fileUpload #firmwareUpload [customUpload]="true" mode="basic" accept=".bin" (uploadHandler)="otaUpdate($event)"
-                    [auto]="true" chooseLabel="Browse"></p-fileUpload>
+                <div class="card-header">
+                    <h5 class="text-gradient">
+                        <i class="pi pi-microchip mr-2"></i>
+                        Update Firmware
+                    </h5>
+                    <span *ngIf="firmwareUpdateProgress != null" class="text-primary font-medium">{{firmwareUpdateProgress}}%</span>
+                </div>
 
-                <small>(esp-miner.bin)</small>
+                <div class="p-4">
+                    <p-fileUpload #firmwareUpload [customUpload]="true" mode="basic" accept=".bin" (uploadHandler)="otaUpdate($event)"
+                        [auto]="true" chooseLabel="Select esp-miner.bin" class="w-full">
+                        <ng-template pTemplate="content">
+                            <div class="text-center p-4">
+                                <i class="pi pi-cpu text-4xl text-muted mb-3 block"></i>
+                                <p class="text-muted mb-3">Drag and drop or click to select the firmware update file</p>
+                                <small class="text-muted">Only .bin files are accepted</small>
+                            </div>
+                        </ng-template>
+                    </p-fileUpload>
+
+                    <div class="mt-3 p-3 bg-warning-50 border-round">
+                        <i class="pi pi-exclamation-triangle text-warning mr-2"></i>
+                        <small class="text-warning"><strong>Warning:</strong> Firmware updates will restart the device</small>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 </div>

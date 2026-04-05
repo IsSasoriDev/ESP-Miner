@@ -1,3 +1,54 @@
+/* Modern AxeOS Color System */
+:root {
+    /* Brand Colors */
+    --primary-color: #667eea;
+    --primary-color-light: #818cf8;
+    --primary-color-dark: #4f46e5;
+    --primary-color-darker: #3730a3;
+    --primary-color-text: #ffffff;
+
+    --accent-color: #00d4ff;
+    --accent-color-light: #00f0ff;
+
+    /* Status Colors */
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #0891b2;
+
+    /* Surfaces */
+    --surface-ground: #0a0e27;
+    --surface-section: #131829;
+    --surface-card: #1a1f3a;
+    --surface-overlay: rgba(19, 24, 41, 0.6);
+    --surface-border: rgba(100, 116, 139, 0.2);
+    --surface-hover: rgba(30, 38, 66, 0.9);
+    --surface-d: #1e293b;
+    --surface-900: #0f172a;
+    --surface-800: #1e293b;
+    --surface-700: #334155;
+    --surface-600: #475569;
+
+    /* Text Colors */
+    --text-color: #ffffff;
+    --text-color-secondary: #cbd5e1;
+    --text-color-muted: #94a3b8;
+
+    /* Component Specific */
+    --topbar-height: 70px;
+    --sidebar-width: 250px;
+
+    /* Shadows */
+    --shadow-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+
+    /* Transitions */
+    --transition-duration: 0.3s;
+    --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @font-face {
     font-family: 'Nippo-Regular';
     src: url(/assets/fonts/Nippo-Regular.woff2) format('woff2');
@@ -7,16 +58,13 @@
 }
 
 * {
-    font-family: 'Nippo-Regular';
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @import "app/layout/styles/layout/layout.scss";
 
-// Theme Selection - Change to 'modern' for modern theme
-// Default: bitaxe
-// Options: bitaxe, modern
-@import "app/layout/styles/theme/themes/vela/bitaxe/theme.scss";
 // @import "app/layout/styles/theme/themes/modern/theme.scss";
+@import "app/layout/styles/theme/themes/vela/bitaxe/theme.scss";
 
 @import "app/layout/styles/modules/primeicons.css";
 @import "app/layout/styles/modules/primeng.min.css";
@@ -38,15 +86,15 @@ p-chart>div {
 
 .hover-next-input:hover + * {
     .p-dropdown {
-        border-color: var(--checkbox-hover-bg);
+        border-color: var(--primary-color);
     }
     .p-slider {
         .p-slider-handle {
-            border-color: var(--checkbox-hover-bg);
-            background-color: var(--checkbox-hover-bg);
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
         }
         .p-slider-range {
-            background-color: var(--checkbox-hover-bg);
+            background-color: var(--primary-color);
         }
     }
 }

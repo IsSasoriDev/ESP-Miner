@@ -1,8 +1,20 @@
 .layout-footer {
-    transition: margin-left $transitionDuration;
+    padding: 2rem;
+    border-top: 1px solid $borderColor;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--surface-border);
+    background: linear-gradient(180deg, rgba(26, 31, 58, 0.5) 0%, $bgSecondary 100%);
+    color: $textMuted;
+    font-size: 0.875rem;
+    transition: all $transitionDuration $easeInOut;
+
+    a {
+        color: $accentColor;
+        margin: 0 0.5rem;
+
+        &:hover {
+            color: $accentColorLight;
+        }
+    }
 }

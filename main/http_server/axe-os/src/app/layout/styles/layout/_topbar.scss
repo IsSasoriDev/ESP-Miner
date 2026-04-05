@@ -1,25 +1,40 @@
 .layout-topbar {
     position: fixed;
-    height: var(--topbar-height);
+    height: 70px;
     z-index: 997;
     left: 0;
     top: 0;
     width: 100%;
     padding: 0 2rem;
-    background-color: var(--surface-card);
-    transition: left $transitionDuration;
+    background: linear-gradient(90deg, rgba(19, 24, 41, 0.95) 0%, rgba(26, 31, 58, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid $borderColor;
     display: flex;
     align-items: center;
-    box-shadow:
-        0px 3px 5px rgba(0, 0, 0, 0.02),
-        0px 0px 2px rgba(0, 0, 0, 0.05),
-        0px 1px 4px rgba(0, 0, 0, 0.08);
+    justify-content: space-between;
+    box-shadow: $shadowMd;
+    transition: all $transitionDuration $easeInOut;
 
-    @media screen and (max-width: 575px) {
-        justify-content: space-between;
+    .app-logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: $primaryGradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        
+        i {
+            font-size: 2rem;
+        }
     }
-    @media screen and (max-width: 768px) {
-        padding: 0 1rem;
+
+    .layout-topbar-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
     }
 
     .layout-topbar-button {
@@ -27,31 +42,31 @@
         justify-content: center;
         align-items: center;
         position: relative;
-        color: var(--primary-color);
-        border-radius: 50%;
-        width: 3rem;
-        height: 3rem;
+        color: $textSecondary;
+        border-radius: 8px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
-        transition:
-            background-color $transitionDuration,
-            color $transitionDuration;
-        margin-left: 2rem;
-
-        @media screen and (min-width: 576px) {
-            margin-left: 5rem;
-        }
+        transition: all $transitionDuration $easeInOut;
+        border: 1px solid transparent;
 
         &:hover {
-            color: var(--text-color);
-            background-color: var(--surface-hover);
+            color: $accentColor;
+            background-color: $bgTertiary;
+            border-color: $borderColorLight;
+            transform: translateY(-2px);
         }
 
-        &:focus {
-            @include focused();
+        &:active {
+            transform: translateY(0);
         }
 
         i {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
+    }
+
+    @media screen and (max-width: 768px) {
+        padding: 0 1rem;
     }
 }

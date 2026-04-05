@@ -12,12 +12,28 @@ interface ThemeOption {
   };
 }
 
+interface ThemeType {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-theme-config',
   template: `
     <div class="card">
       <div class="grid">
         <div class="col-12">
+          <h5>Theme</h5>
+          <div class="flex gap-3">
+            <div *ngFor="let theme of themeTypes" class="flex align-items-center">
+              <p-radioButton name="theme" [value]="theme.value" [(ngModel)]="selectedTheme"
+                (onClick)="changeThemeType(theme.value)" [inputId]="theme.value"></p-radioButton>
+              <label [for]="theme.value" class="ml-2">{{theme.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4">
           <h5>Color Scheme</h5>
           <div class="flex gap-3">
             <div class="flex align-items-center">
@@ -55,6 +71,11 @@ interface ThemeOption {
 export class ThemeConfigComponent implements OnInit {
   selectedScheme: string;
   currentColor: string = '';
+  selectedTheme: string = 'bitaxe';
+  themeTypes: ThemeType[] = [
+    { name: 'Bitaxe', value: 'bitaxe' },
+    { name: 'Modern', value: 'modern' }
+  ];
   themes: ThemeOption[] = [
     {
       name: 'Orange',
@@ -236,6 +257,12 @@ export class ThemeConfigComponent implements OnInit {
             if (settings.colorScheme) {
               this.selectedScheme = settings.colorScheme;
             }
+            if (settings.theme) {
+              this.selectedTheme = settings.theme;
+              // Apply theme class to body
+              document.body.className = document.body.className.replace(/theme-\w+/g, '');
+              document.body.classList.add(`theme-${this.selectedTheme}`);
+            }
             if (settings.accentColors) {
               this.applyThemeColors(settings.accentColors);
               this.currentColor = settings.accentColors['--primary-color'];
@@ -263,7 +290,10 @@ export class ThemeConfigComponent implements OnInit {
     config.colorScheme = scheme;
     this.layoutService.config.set(config);
 
-    this.themeService.saveThemeSettings({ colorScheme: scheme })
+    this.themeService.saveThemeSettings({ 
+      colorScheme: scheme,
+      theme: this.selectedTheme
+    })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         error: (error) => console.error('Error saving theme settings:', error)
@@ -276,7 +306,24 @@ export class ThemeConfigComponent implements OnInit {
 
     this.themeService.saveThemeSettings({
       colorScheme: this.selectedScheme,
+      theme: this.selectedTheme,
       accentColors: theme.accentColors
+    }).pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: (error) => console.error('Error saving theme settings:', error)
+      });
+  }
+
+  changeThemeType(theme: string) {
+    this.selectedTheme = theme;
+    // Apply theme change to the document
+    document.body.className = document.body.className.replace(/theme-\w+/g, '');
+    document.body.classList.add(`theme-${theme}`);
+
+    this.themeService.saveThemeSettings({
+      colorScheme: this.selectedScheme,
+      theme: this.selectedTheme,
+      accentColors: this.currentColor ? { '--primary-color': this.currentColor } : undefined
     }).pipe(takeUntil(this.destroy$))
       .subscribe({
         error: (error) => console.error('Error saving theme settings:', error)
